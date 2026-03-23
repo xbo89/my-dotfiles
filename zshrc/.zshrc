@@ -26,6 +26,10 @@ export PATH="$HOME/.local/bin:$PATH"
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
+# ===================================
+# Aliases - zellij
+# ===================================
+alias zj="zellij"
 
 # ===================================
 # Aliases - exa (ls replacement)
