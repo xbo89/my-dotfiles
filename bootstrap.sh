@@ -150,7 +150,7 @@ fi
 # ------------------------------------------------
 header "7/8 🔗 Stowing Dotfiles"
 
-PACKAGES=(ghostty starship tmux zshrc nvim)
+PACKAGES=(ghostty starship tmux zshrc nvim zellij)
 
 mkdir -p "$BACKUP_DIR"
 BACKED_UP=false
