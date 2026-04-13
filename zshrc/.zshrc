@@ -77,3 +77,29 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # zsh-syntax-highlighting
 # ===================================
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# ===================================
+# Aliases - Git
+# ===================================
+alias g="git"
+alias gs="git status"
+alias gp="git push"
+alias gl="git pull"
+alias glog="git log --oneline --graph --decorate"
+alias lg="lazygit"
+
+# ===================================
+# Aliases - pnpm
+# ===================================
+alias pn="pnpm"
+alias pnd="pnpm dev"
+alias pnb="pnpm build"
+alias pni="pnpm install"
+
+# ===================================
+# Aliases - System
+# ===================================
+alias yz="yazi"
+alias lzd="lazydocker"
+alias reload="source ~/.zshrc"
+alias ip="curl -s ifconfig.me"
