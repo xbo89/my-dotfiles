@@ -32,7 +32,7 @@ echo ""
 # ------------------------------------------------
 # 1. Xcode Command Line Tools
 # ------------------------------------------------
-header "1/9 🔧 Xcode Command Line Tools"
+header "1/10 🔧 Xcode Command Line Tools"
 if ! xcode-select -p &>/dev/null; then
   info "Installing Xcode Command Line Tools..."
   xcode-select --install
@@ -45,7 +45,7 @@ fi
 # ------------------------------------------------
 # 2. Homebrew
 # ------------------------------------------------
-header "2/9 🍺 Homebrew"
+header "2/10 🍺 Homebrew"
 if ! command -v brew &>/dev/null; then
   info "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -62,7 +62,7 @@ success "Homebrew ready ($(brew --version | head -1))"
 # ------------------------------------------------
 # 3. Brew packages
 # ------------------------------------------------
-header "3/9 📦 Brew Packages"
+header "3/10 📦 Brew Packages"
 
 BREW_PACKAGES=(
   atuin
@@ -108,7 +108,7 @@ done
 # ------------------------------------------------
 # 4. Uninstall Oh My Zsh
 # ------------------------------------------------
-header "4/9 🧹 Oh My Zsh"
+header "4/10 🧹 Oh My Zsh"
 if [ -d "$HOME/.oh-my-zsh" ]; then
   info "Removing Oh My Zsh..."
   rm -rf "$HOME/.oh-my-zsh"
@@ -125,23 +125,40 @@ fi
 # ------------------------------------------------
 # 5. Node.js via fnm
 # ------------------------------------------------
-header "5/9 📦 Node.js (fnm)"
+header "5/10 📦 Node.js (fnm)"
 if command -v fnm &>/dev/null; then
-  if fnm list 2>/dev/null | grep -q "lts"; then
-    success "Node.js LTS already installed"
-  else
-    info "Installing Node.js LTS..."
-    fnm install --lts
-    success "Node.js LTS installed"
-  fi
+  info "Installing Node.js LTS..."
+  fnm install --lts
+  fnm default lts-latest
+  eval "$(fnm env --shell bash)"
+  fnm use default
+  success "Node.js $(node -v) ready"
 else
   warning "fnm not found, skipping (will be installed via brew above)"
 fi
 
 # ------------------------------------------------
-# 6. bat Catppuccin theme
+# 6. Claude Code
 # ------------------------------------------------
-header "6/9 🦇 bat Catppuccin Frappé Theme"
+header "6/10 🤖 Claude Code"
+if command -v node &>/dev/null; then
+  if command -v claude &>/dev/null; then
+    info "Updating Claude Code..."
+    npm update -g @anthropic-ai/claude-code &>/dev/null
+    success "Claude Code $(claude --version) ready"
+  else
+    info "Installing Claude Code..."
+    npm install -g @anthropic-ai/claude-code &>/dev/null
+    success "Claude Code $(claude --version) installed"
+  fi
+else
+  warning "node not found, skipping Claude Code install"
+fi
+
+# ------------------------------------------------
+# 7. bat Catppuccin theme
+# ------------------------------------------------
+header "7/10 🦇 bat Catppuccin Frappé Theme"
 BAT_THEME_DIR="$(bat --config-dir)/themes"
 BAT_THEME_FILE="$BAT_THEME_DIR/Catppuccin Frappe.tmTheme"
 mkdir -p "$BAT_THEME_DIR"
@@ -158,7 +175,7 @@ fi
 # ------------------------------------------------
 # 7. git submodules
 # ------------------------------------------------
-header "7/9 🔗 Git Submodules"
+header "8/10 🔗 Git Submodules"
 if [ -f "$DOTFILES_DIR/.gitmodules" ]; then
   cd "$DOTFILES_DIR"
   git submodule update --init --recursive
@@ -170,7 +187,7 @@ fi
 # ------------------------------------------------
 # 8. stow
 # ------------------------------------------------
-header "8/9 🔗 Stowing Dotfiles"
+header "9/10 🔗 Stowing Dotfiles"
 
 PACKAGES=(ghostty starship tmux zshrc nvim zellij)
 
@@ -217,7 +234,7 @@ done
 # ------------------------------------------------
 # 9. Ghostty Library config notice
 # ------------------------------------------------
-header "9/9 👻 Ghostty"
+header "10/10 👻 Ghostty"
 GHOSTTY_LIB="$HOME/Library/Application Support/com.mitchellh.ghostty/config"
 if [ -f "$GHOSTTY_LIB" ]; then
   ACTIVE_LINES=$(grep -v '^\s*#' "$GHOSTTY_LIB" | grep -v '^\s*$' | wc -l | tr -d ' ')
@@ -244,7 +261,6 @@ echo ""
 echo "  📋 Next steps:"
 echo "     1. source ~/.zshrc"
 echo "     2. Run 'nvim' to install LazyVim plugins"
-echo "     3. Run 'fnm install --lts' if Node.js was not installed above"
 echo ""
 
 if [ "$BACKED_UP" = true ]; then

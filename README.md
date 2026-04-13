@@ -51,11 +51,12 @@ cd ~/dotfiles && chmod +x bootstrap.sh && ./bootstrap.sh
 | 2 | 安装 Homebrew |
 | 3 | 安装所有命令行工具 |
 | 4 | 卸载 Oh My Zsh（如果有） |
-| 5 | 通过 fnm 安装 Node.js LTS |
-| 6 | 安装 bat 的 Catppuccin Frappé 主题 |
-| 7 | 初始化 git submodules（tmux 插件等） |
-| 8 | 用 stow 关联所有配置文件 |
-| 9 | 检测 Ghostty 配置冲突并提示 |
+| 5 | 通过 fnm 安装 Node.js LTS，并设为默认版本 |
+| 6 | 安装 Claude Code CLI（最新版） |
+| 7 | 安装 bat 的 Catppuccin Frappé 主题 |
+| 8 | 初始化 git submodules（tmux 插件等） |
+| 9 | 用 stow 关联所有配置文件 |
+| 10 | 检测 Ghostty 配置冲突并提示 |
 
 > ⏱️ 第一次安装约需 5–10 分钟，取决于网速。
 
