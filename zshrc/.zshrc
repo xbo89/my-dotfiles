@@ -1,19 +1,32 @@
 # ===================================
-# Homebrew
+# Homebrew (static path, no fork)
 # ===================================
-eval "$(/opt/homebrew/bin/brew shellenv)"
+export HOMEBREW_PREFIX="/opt/homebrew"
+export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 
 # ===================================
-# nvm
+# Init script cache
+# Regenerates only when the binary changes
 # ===================================
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+_init_cached() {
+  local name="$1"; shift
+  local cache="$HOME/.zsh_cache/${name}.zsh"
+  mkdir -p "$HOME/.zsh_cache"
+  if [[ ! -s "$cache" || "$(command -v $name)" -nt "$cache" ]]; then
+    "$@" >| "$cache" 2>/dev/null
+  fi
+  source "$cache"
+}
+
+# ===================================
+# fnm (Node version manager)
+# ===================================
+_init_cached fnm fnm env --use-on-cd --shell zsh
 
 # ===================================
 # atuin
 # ===================================
-eval "$(atuin init zsh)"
+_init_cached atuin atuin init zsh
 
 # ===================================
 # claude
@@ -39,29 +52,28 @@ alias ll="exa --icons -l"
 alias la="exa --icons -la"
 alias lt="exa --icons --tree --level=2"
 
-
 # ===================================
 # Aliases - bat (cat replacement)
 # ===================================
 alias cat="bat"
-export BAT_THEME="OneHalfDark"
+export BAT_THEME="Catppuccin Frappe"
 
 # ===================================
 # zoxide
 # ===================================
-eval "$(zoxide init zsh)"
+_init_cached zoxide zoxide init zsh
 
 # ===================================
 # starship
 # ===================================
-eval "$(starship init zsh)"
+_init_cached starship starship init zsh
 
 # ===================================
 # zsh-autosuggestions
 # ===================================
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # ===================================
 # zsh-syntax-highlighting
 # ===================================
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
