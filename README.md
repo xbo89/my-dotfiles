@@ -4,6 +4,34 @@
 
 ---
 
+## ⚠️ 使用前必读
+
+**这是一份个人 dotfiles，在运行安装脚本前，请先确认以下事项：**
+
+### 脚本会做哪些「破坏性操作」
+
+| 操作 | 说明 | 影响 |
+|------|------|------|
+| **卸载 Oh My Zsh** | 如果检测到 `~/.oh-my-zsh` 目录，会直接删除 | 你在 Oh My Zsh 里的主题、插件配置会丢失 |
+| **覆盖 `~/.zshrc`** | 用 stow 将本仓库的 `.zshrc` 链接到 `~`，原文件会备份到 `~/.dotfiles_backup_*` | 你原来的 zshrc 配置会被替换 |
+| **覆盖其他配置文件** | `~/.config/nvim`、`~/.config/tmux` 等如有冲突，原文件同样会备份 | 原有编辑器、终端配置会被替换 |
+| **替换 nvm 为 fnm** | 不会删除 `~/.nvm` 目录，但 zshrc 不再加载 nvm | 原来通过 nvm 安装的 Node 版本需重新用 fnm 安装 |
+
+> 💡 所有被替换的文件都会备份到 `~/.dotfiles_backup_时间戳/`，不会永久丢失，但需要手动恢复。
+
+### 适合使用这份配置的情况
+
+- ✅ 全新 Mac，还没有任何终端配置
+- ✅ 愿意完全采用这套工具链（Zsh + Ghostty + Zellij/tmux + Neovim）
+- ✅ 用作参考，挑选部分配置手动整合到自己的 dotfiles
+
+### 不适合直接使用的情况
+
+- ❌ 已有精心调校的 Oh My Zsh 配置且不想丢失
+- ❌ 使用的是其他终端或 Shell 环境
+
+---
+
 ## ✨ 包含什么
 
 | 工具 | 说明 |
@@ -49,7 +77,7 @@ cd ~/dotfiles && chmod +x bootstrap.sh && ./bootstrap.sh
 |------|------|
 | 1 | 安装 Xcode Command Line Tools |
 | 2 | 安装 Homebrew |
-| 3 | 安装所有命令行工具 |
+| 3 | 安装所有命令行工具（via Brewfile） |
 | 4 | 卸载 Oh My Zsh（如果有） |
 | 5 | 通过 fnm 安装 Node.js LTS，并设为默认版本 |
 | 6 | 安装 Claude Code CLI（最新版） |
@@ -95,12 +123,17 @@ nvim
 ## 🔄 日常更新
 
 ```bash
-# 更新 dotfiles 和所有插件
+# 拉取最新配置
 cd ~/dotfiles && git pull && git submodule update --remote
 
-# 更新所有 Homebrew 工具（会自动重建 zsh init 缓存）
+# 安装新增的工具（只补缺，不动已有的）
+brew bundle
+
+# 更新所有已安装的工具
 brew update && brew upgrade
 ```
+
+> 💡 以后在 dotfiles 里新增工具只需往 `Brewfile` 加一行，另一台电脑 `brew bundle` 就会自动补装，不需要记住改了什么。
 
 ---
 

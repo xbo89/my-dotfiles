@@ -63,47 +63,9 @@ success "Homebrew ready ($(brew --version | head -1))"
 # 3. Brew packages
 # ------------------------------------------------
 header "3/10 📦 Brew Packages"
-
-BREW_PACKAGES=(
-  atuin
-  bat
-  direnv
-  exa
-  fd
-  ffmpeg
-  ffmpegthumbnailer
-  fnm
-  fzf
-  gh
-  git
-  lazydocker
-  lazygit
-  lsd
-  neovim
-  pnpm
-  ripgrep
-  starship
-  stow
-  tmux
-  tree-sitter
-  wget
-  yazi
-  zellij
-  zoxide
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  cowsay
-  rustup-init
-)
-
-for pkg in "${BREW_PACKAGES[@]}"; do
-  if brew list "$pkg" &>/dev/null; then
-    success "$pkg"
-  else
-    info "Installing $pkg..."
-    brew install "$pkg" &>/dev/null && success "$pkg installed"
-  fi
-done
+info "Installing packages from Brewfile..."
+brew bundle --file="$DOTFILES_DIR/Brewfile"
+success "All packages ready"
 
 # ------------------------------------------------
 # 4. Uninstall Oh My Zsh
