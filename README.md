@@ -19,7 +19,9 @@
 | **覆盖其他配置文件** | `~/.config/nvim`、`~/.config/tmux` 等如有冲突，原文件同样会备份 | 原有编辑器、终端配置会被替换 |
 | **替换 nvm 为 fnm** | 不会删除 `~/.nvm` 目录，但 zshrc 不再加载 nvm | 原来通过 nvm 安装的 Node 版本需重新用 fnm 安装 |
 
-> 💡 所有被替换的文件都会备份到 `~/.dotfiles_backup_时间戳/`，不会永久丢失，但需要手动恢复。
+> 💡 所有被替换的文件都会按**文件粒度**备份到 `~/.dotfiles_backup_时间戳/`，不会永久丢失，但需要手动恢复。
+>
+> 🔒 安装脚本使用 `stow --no-folding`，**只链接具体文件、绝不整体搬动 `~/.config`**，所以 `~/.config` 里其它 App（raycast、vscode 等）的配置不会被误伤。如果你用的是旧版脚本导致 `~/.config` 被搬乱，运行仓库里的 `restore.sh` 即可恢复（见下文「恢复被备份的配置」）。
 
 ### 适合使用这份配置的情况
 
@@ -155,6 +157,25 @@ stow -d ~/dotfiles -t ~ zshrc     # Zsh
 
 ---
 
+## 🔙 恢复被备份的配置
+
+如果安装过程中 `~/.config` 被搬乱（多见于旧版脚本，会把整个 `~/.config` 搬进备份目录），用仓库自带的恢复脚本一键还原：
+
+```bash
+cd ~/dotfiles && bash restore.sh
+```
+
+脚本会：
+
+1. 自动找到最新的 `~/.dotfiles_backup_*` 备份目录；
+2. 列出其中所有 `.config` 快照及各自的条目数；
+3. 推荐**内容最全**的一份（通常是含你全部 App 配置的原始版本）；
+4. 在你确认后恢复回 `~/.config`，并把当前残缺的 `~/.config` 改名留底（不会直接删，留有后路）。
+
+恢复后核对 `ls -la ~/.config` 里你原有的配置都在，再重跑 `./bootstrap.sh` 即可。
+
+---
+
 ## 📦 包含的命令行工具
 
 | 工具 | 用途 |
@@ -204,6 +225,15 @@ rm ~/.zsh_cache/fnm.zsh && source ~/.zshrc
 
 把报错信息复制下来，查看是哪一步出了问题。通常重新运行一次即可解决：
 ```bash
+./bootstrap.sh
+```
+
+**Q: 第 9 步 stow 报「Directory conflict / Directory not empty」，`~/.config` 被搬乱了**
+
+这是旧版脚本的 bug（会把整个 `~/.config` 反复搬进备份目录）。已在新版修复——拉取最新代码后先恢复再重跑：
+```bash
+cd ~/dotfiles && git pull
+bash restore.sh
 ./bootstrap.sh
 ```
 

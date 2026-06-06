@@ -177,19 +177,12 @@ for pkg in "${PACKAGES[@]}"; do
     fi
   done < <(find "$DOTFILES_DIR/$pkg" -type f -print0)
 
-  # Handle directory conflicts (e.g. ~/.config/ghostty exists as real dir)
-  while IFS= read -r -d '' src_dir; do
-    rel_dir="${src_dir#$DOTFILES_DIR/$pkg/}"
-    target_dir="$HOME/$rel_dir"
-
-    if [ -d "$target_dir" ] && [ ! -L "$target_dir" ]; then
-      warning "Directory conflict: backing up $target_dir"
-      mv "$target_dir" "$BACKUP_DIR/$(basename "$target_dir")_$(date +%s)"
-      BACKED_UP=true
-    fi
-  done < <(find "$DOTFILES_DIR/$pkg" -mindepth 1 -maxdepth 1 -type d -print0)
-
-  stow -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
+  # No directory-level backup: every package shares top-level dirs like
+  # ~/.config, so moving the whole directory would clobber other apps' configs
+  # (and earlier packages' symlinks). --no-folding makes stow create real
+  # directories and symlink individual files, so shared dirs are never moved.
+  # Per-file conflicts are already handled by the loop above.
+  stow --no-folding -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
   success "$pkg stowed"
 done
 
