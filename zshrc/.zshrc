@@ -45,12 +45,12 @@ export PATH="$PNPM_HOME:$PATH"
 alias zj="zellij"
 
 # ===================================
-# Aliases - exa (ls replacement)
+# Aliases - eza (ls replacement)
 # ===================================
-alias ls="exa --icons"
-alias ll="exa --icons -l"
-alias la="exa --icons -la"
-alias lt="exa --icons --tree --level=2"
+alias ls="eza --icons"
+alias ll="eza --icons -l"
+alias la="eza --icons -la"
+alias lt="eza --icons --tree --level=2"
 
 # ===================================
 # Aliases - bat (cat replacement)

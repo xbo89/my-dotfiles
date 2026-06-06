@@ -160,7 +160,7 @@ stow -d ~/dotfiles -t ~ zshrc     # Zsh
 | 工具 | 用途 |
 |------|------|
 | `fnm` | Node.js 版本管理（快速，兼容 `.nvmrc`） |
-| `exa` | 更好看的 `ls`（带图标、颜色） |
+| `eza` | 更好看的 `ls`（带图标、颜色） |
 | `bat` | 更好看的 `cat`（带语法高亮，Catppuccin Frappé 主题） |
 | `fzf` | 模糊搜索 |
 | `zoxide` | 智能 `cd`，自动记忆常用目录 |

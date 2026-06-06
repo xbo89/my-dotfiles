@@ -23,7 +23,7 @@ brew "neovim"
 brew "tree-sitter"
 
 # 文件与搜索
-brew "exa"
+brew "eza"
 brew "bat"
 brew "fd"
 brew "fzf"
